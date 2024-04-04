@@ -4,6 +4,10 @@ h1{
 
 }
 
+p{
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
 body {
     height: 100px;
     background: #66a2df;
