@@ -1,3 +1,34 @@
-body{
-    background-color: hotpink;
+h1{
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-style:italic;
+
+}
+
+body {
+    height: 100px;
+    background: #66a2df;
+    text-align: center;
+}
+
+.container{
+    width: 20%;
+    height: 50px;
+    padding-top: 20px;
+    top: 20%;
+    left: 50%;
+    background: white;
+    border-radius: 10px; 
+    position: absolute;
+  
+    transform: translate(-50%,-50%);
+  
+
+
+
+}
+
+ul{
+    position: absolute;
+    padding-top: 30px;
+    max-width: fit-content;
 }

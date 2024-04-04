@@ -5,4 +5,19 @@ head
     title My First Full Stack
 body
     h1 Simple TODO APP
-    p TODO: Complete the app!
+    p To Do List 
+
+
+.container
+    #newtask
+        form(action='/add', method='post')
+            input(type='text', name='task', placeholder='Enter task')
+            button(type='submit') Add Task
+    #tasks 
+        ul
+            each task in tasks
+                li= task.task
+                    form(action=`/delete/${task.id}`, method='post')
+                        button(type='submit') Delete
+
+

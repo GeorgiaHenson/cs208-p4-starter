@@ -12,31 +12,54 @@ db.run(`CREATE TABLE todo (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     task TEXT NOT NULL)`)
 
-const app = express()
-app.use(express.static('public'))
-app.set('views', 'views')
-app.set('view engine', 'pug')
-app.use(express.urlencoded({ extended: false }))
+const app = express();
 
-app.get('/', function (req, res) {
-    //TODO You will need to do a SQL select here
-    //TODO You will need to update the code below!
-    console.log('GET called')
-    res.render('index')
+app.set('view engine', 'pug');
+app.set('views', './views');
 
-})
+app.use(express.static('public'));
+app.use(express.urlencoded({ extended: true }));
 
-app.post('/', function (req, res) {
-    console.log('adding todo item')
-    //TODO You will need to to do a SQL Insert here
+app.get('/', (req, res) => {
+    const local = { tasks: [] }
+    db.each('SELECT id, task FROM todo', function (err, row) {
+      if (err) {
+        console.log(err)
+      } else {
+        local.tasks.push({ id: row.id, task: row.task })
+      }
+    }, function (err, numrows) {
+      if (!err) {
+        res.render('index', local)
+      } else {
+        console.log(err)
+      }
+    })
+});
 
-})
+app.post('/add', (req, res) => {
+    const task = req.body.task;
+    db.run('INSERT INTO todo (task) VALUES (?)', [task], err => {
+        if (err) {
+            console.error(err.message);
+            res.status(500).send('Internal Server Error');
+            return;
+        }
+        res.redirect('/');
+    });
+});
 
-app.post('/delete', function (req, res) {
-    console.log('deleting todo item')
-    //TODO you will need to delete here
-
-})
+app.post('/delete/:id', (req, res) => {
+    const id = req.params.id;
+    db.run('DELETE FROM todo WHERE id = ?', [id], err => {
+        if (err) {
+            console.error(err.message);
+            res.status(500).send('Internal Server Error');
+            return;
+        }
+        res.redirect('/');
+    });
+});
 
 // Start the web server
 app.listen(3000, function () {
